@@ -2,6 +2,8 @@
 
 The Information Diet is a book written by Clay Johnson on conscious information consumption. "You are what you read!"
 
+![alt text](https://github.com/priyashah13/infodiet/blob/master/infoDiet%20Book.jpg)
+
 EECS 338 - Practicum in Intelligent Information Systems
 Class Project: infoDiet 
 
