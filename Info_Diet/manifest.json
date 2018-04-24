@@ -1,0 +1,35 @@
+{
+   "background": {
+      "scripts": [ "scripts/mapping_code_subcat.js", "scripts/mapping_code_topcat.js", "scripts/mapping_subcat_code.js", "scripts/mapping_topcat_code.js", "scripts/mapping_subcat_topcat.js", "scripts/mapping_topcat_subcat.js", "scripts/url_parsing/tlds.js", "scripts/url_parsing/ParseURL.js", "scripts/webpage_classification/en_stopwords.js", "scripts/webpage_classification/es_stopwords.js", "scripts/webpage_classification/fr_stopwords.js", "scripts/webpage_classification/it_stopwords.js", "scripts/webpage_classification/domain_rules.js", "scripts/webpage_classification/domain_rules.js", "scripts/webpage_classification/host_rules.js", "scripts/webpage_classification/path_rules.js", "scripts/webpage_classification/en_fpkws_catid_mapping.js", "scripts/webpage_classification/en_kws_catid_mapping.js", "scripts/webpage_classification/fr_kws_catid_mapping.js", "scripts/webpage_classification/es_kws_catid_mapping.js", "scripts/webpage_classification/it_kws_catid_mapping.js", "scripts/webpage_classification/WebPageClassifier.js", "scripts/background.js" ]
+   },
+   "browser_action": {
+      "default_icon": {
+         "19": "icon_19.png",
+         "38": "icon_38.png"
+      },
+      "default_popup": "popup.html"
+   },
+   "content_scripts": [ {
+      "all_frames": true,
+      "js": [ "scripts/content_allframes.js" ],
+      "matches": [ "*://*/*" ],
+      "run_at": "document_start"
+   } ],
+   "description": "Lets users browse the Web in peace by giving them back the control and providing fine-grained choices over widespread tracking.",
+   "icons": {
+      "128": "icon_128.png",
+      "16": "icon_16.png",
+      "48": "icon_48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnYooF0NCoBEIkppY0ty/03416uwJeZjkI5lYiRWrd7k0LSD0/yOlDIQHRGpkHYd6vyJognezwvycXSNhrQX6bKIJUjO5wgkxGfyXdyGtIjTk5C4n0tNiyZA/wZqWbkZ8FNgj/aDWaZtIFaJbi5AprYETFhiBqWrsRL5448ZXh5fYeHUNNbls0mYNgonbWRYlLIxn1K2DSooCjhVpdZK0tQNfEpxl0fUgfLb8PDISJjDYEz6vyoWoQkpHHw6r2gXfapBlWFUXX8rfQlyi4XP3PSzIx+U3AKl3Uee4uF3g3PKFcu3fgIZewiZhqYEgxqwj/0mvDjye52CK2pqxpSRZTwIDAQAB",
+   "manifest_version": 2,
+   "name": "MyTrackingChoices",
+   "options_ui": {
+      "chrome_style": true,
+      "page": "options.html"
+   },
+   "permissions": [ "alarms", "tabs", "storage", "management", "unlimitedStorage", "webNavigation", "webRequest", "webRequestBlocking", "*://*/*" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "1.0.9",
+   "web_accessible_resources": [ "input_form.html" ]
+}
