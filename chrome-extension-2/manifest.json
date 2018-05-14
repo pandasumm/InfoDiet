@@ -4,14 +4,40 @@
     "description": "Keeps track of how much time you spend on various web sites.",
     "manifest_version": 2,
     "background": {
-        "scripts": ["config.js", "sites.js", "tracker.js", "background.js"]
+        "scripts": ["config.js", "sites.js", "tracker.js",
+            "scripts/mapping_code_subcat.js",
+            "scripts/mapping_code_topcat.js",
+            "scripts/mapping_subcat_code.js",
+            "scripts/mapping_topcat_code.js",
+            "scripts/mapping_subcat_topcat.js",
+            "scripts/mapping_topcat_subcat.js",
+            "scripts/url_parsing/tlds.js",
+            "scripts/url_parsing/ParseURL.js",
+            "scripts/webpage_classification/en_stopwords.js",
+            "scripts/webpage_classification/es_stopwords.js",
+            "scripts/webpage_classification/fr_stopwords.js",
+            "scripts/webpage_classification/it_stopwords.js",
+            "scripts/webpage_classification/domain_rules.js",
+            "scripts/webpage_classification/domain_rules.js",
+            "scripts/webpage_classification/host_rules.js",
+            "scripts/webpage_classification/path_rules.js",
+            "scripts/webpage_classification/en_fpkws_catid_mapping.js",
+            "scripts/webpage_classification/en_kws_catid_mapping.js",
+            "scripts/webpage_classification/fr_kws_catid_mapping.js",
+            "scripts/webpage_classification/es_kws_catid_mapping.js",
+            "scripts/webpage_classification/it_kws_catid_mapping.js",
+            "scripts/webpage_classification/WebPageClassifier.js",
+            "background.js"
+        ]
     },
     "content_security_policy": "script-src 'self' https://ssl.google-analytics.com; object-src 'self'",
-    "permissions": [
-        "alarms",
-        "idle",
-        "tabs"
-    ],
+    "content_scripts": [{
+        "all_frames": true,
+        "js": ["scripts/content_allframes.js"],
+        "matches": ["*://*/*"],
+        "run_at": "document_start"
+    }],
+    "permissions": ["alarms", "idle", "tabs", "storage", "management", "unlimitedStorage", "webNavigation", "webRequest", "webRequestBlocking", "*://*/*"],
     "browser_action": {
         "default_icon": "images/icon.png",
         "default_title": "Time Tracker",

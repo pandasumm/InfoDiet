@@ -2,7 +2,7 @@ var _gaq = _gaq || [];
 _gaq.push(['_setAccount', 'UA-45267314-2']);
 _gaq.push(['_trackPageview']);
 
-categorizer = {"https://github.com":"technology", "https://stackoverflow.com" : "entertainment"};
+// categorizer = {"https://github.com":"technology", "https://stackoverflow.com" : "entertainment"};
 
 (function() {
     var ga = document.createElement('script');
@@ -121,6 +121,17 @@ function addLocalDisplay() {
         // console.log(cat[site]);
         // console.log(site);
         var id = cat[site];
+        var background = chrome.extension.getBackgroundPage();
+        // console.log(background.tabs_info);
+        if(!background.tabs_info[id] || background.tabs_info[id].topcatList.length == 0){
+            var linkText = document.createTextNode(site + ": not categorized");
+        }
+        else{
+            var topcatList = background.tabs_info[id].topcatList;
+            // console.log(mapping_code_subcat);
+            var categorized = mapping_code_topcat[topcatList[0]];
+            var linkText = document.createTextNode(site + ": " + categorized);
+        }
         console.log(site + ": " + id);
 
 
