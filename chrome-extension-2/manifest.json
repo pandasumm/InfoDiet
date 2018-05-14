@@ -1,7 +1,7 @@
 {
-    "name": "Time Tracker",
-    "version": "1.2.4",
-    "description": "Keeps track of how much time you spend on various web sites.",
+    "name": "InfoDiet",
+    "version": "1",
+    "description": "You are what you read!",
     "manifest_version": 2,
     "background": {
         "scripts": ["config.js", "sites.js", "tracker.js",
@@ -40,7 +40,7 @@
     "permissions": ["alarms", "idle", "tabs", "storage", "management", "unlimitedStorage", "webNavigation", "webRequest", "webRequestBlocking", "*://*/*"],
     "browser_action": {
         "default_icon": "images/icon.png",
-        "default_title": "Time Tracker",
+        "default_title": "InfoDiet",
         "default_popup": "popup.html"
     },
     "options_page": "options.html",

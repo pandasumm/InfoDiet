@@ -3,9 +3,12 @@ _gaq.push(['_setAccount', 'UA-45267314-2']);
 _gaq.push(['_trackPageview']);
 
 (function() {
-  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+  var ga = document.createElement('script');
+  ga.type = 'text/javascript';
+  ga.async = true;
   ga.src = 'https://ssl.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(ga, s);
 })();
 
 var config = new Config();
@@ -29,16 +32,18 @@ function updateTimeDisplay() {
 function addIgnoredSite() {
   var newSite = document.getElementById("new_ignored_site").value;
   if (newSite.indexOf("http://") != 0 &&
-      newSite.indexOf("https://") != 0) {
+    newSite.indexOf("https://") != 0) {
     alert("Include http:// or https:// prefix.");
     return;
   }
 
-  chrome.extension.sendRequest(
-     {action: "addIgnoredSite", site: newSite},
-     function(response) {
-       restoreOptions();
-     });
+  chrome.extension.sendRequest({
+      action: "addIgnoredSite",
+      site: newSite
+    },
+    function(response) {
+      restoreOptions();
+    });
 }
 
 function removeIgnoredSites() {
@@ -104,7 +109,7 @@ function download() {
   window.open(encodeURI(csvContent));
 }
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function() {
   document.getElementById("add_ignored").addEventListener(
     "click", addIgnoredSite);
   document.getElementById("remove_ignored").addEventListener(
@@ -117,4 +122,3 @@ document.addEventListener("DOMContentLoaded", function () {
     "click", download);
   restoreOptions();
 });
-
