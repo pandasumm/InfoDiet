@@ -15,6 +15,7 @@ function Tracker(config, sites) {
     function(activeInfo) {
       chrome.tabs.get(activeInfo.tabId, function(tab) {
         self._sites.setCurrentFocus(tab.url);
+        self._sites.setCat(tab.url, tab.id);
       });
     }
   );
@@ -72,11 +73,13 @@ Tracker.prototype._updateTimeWithCurrentTab = function() {
       // this, we risk counting time towards a tab while the user is outside of
       // Chrome altogether.
       var url = tabs[0].url;
+      var id = tabs[0].id;
       chrome.windows.get(tabs[0].windowId, function(win) {
         if (!win.focused) {
           url = null;
         }
         self._sites.setCurrentFocus(url);
+        self._sites.setCat(url, id);
       });
     }
   });

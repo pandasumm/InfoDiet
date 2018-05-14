@@ -8,6 +8,10 @@ function Sites(config) {
   if (!localStorage.sites) {
     localStorage.sites = JSON.stringify({});
   }
+  if (!localStorage.cat) {
+    localStorage.cat = JSON.stringify({});
+  }
+
   this._currentSite = null;
   this._siteRegexp = /^(\w+:\/\/[^\/]+).*$/;
   this._startTime = null;
@@ -28,6 +32,21 @@ Object.defineProperty(Sites.prototype, "sites", {
     return sites;
   }
 });
+
+/**
+ * Returns the a dictionary of site -> id.
+ */
+Object.defineProperty(Sites.prototype, "cat", {
+  get: function() {
+    var s = JSON.parse(localStorage.cat);
+    var cat = {}
+    for (var site in s) {
+        cat[site] = s[site];
+    }
+    return cat;
+  }
+});
+
 
 /**
  * Returns just the site/domain from the url. Includes the protocol.
@@ -83,10 +102,20 @@ Sites.prototype.setCurrentFocus = function(url) {
   }
 };
 
+Sites.prototype.setCat = function(url, id) {
+  console.log("setCat!!!!!!!!!!!" + url);
+  // this._updateTime();
+  this._currentSite = this.getSiteFromUrl(url);
+  var cat = this.cat;
+  cat[this._currentSite] = id;
+  localStorage.cat = JSON.stringify(cat);
+};
+
 /**
  * Clear all statistics.
  */
 Sites.prototype.clear = function() {
   localStorage.sites = JSON.stringify({});
+  localStorage.cat = JSON.stringify({});
   this._config.lastClearTime = new Date().getTime();
 };
