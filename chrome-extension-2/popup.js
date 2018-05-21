@@ -11,6 +11,7 @@ _gaq.push(['_trackPageview']);
 var config = new Config();
 var gsites = new Sites(config);
 
+
 function addIgnoredSite(new_site) {
   return function() {
     chrome.extension.sendRequest(
@@ -63,8 +64,8 @@ function categorize(site_url) {
   var xhr = new XMLHttpRequest();
   var url_base64 = btoa(url);
   console.log(url_base64);
-  var s_key = "BE4SztaPNvMnt5mV0DHk";
-  var a_key = "Vjey2H3NZF0vXhmMRni0";
+  var s_key = "8NVyKsUyLnmIQWivwOIv";
+  var a_key = "Ov01k9CHsaqsAvPuMTxd";
   request = "categories/v3/"+url_base64 + "?key=" + a_key;
   var hash = MD5(s_key + ":" + request);
   console.log(hash)
@@ -89,6 +90,7 @@ function addLocalDisplay() {
   var sites = gsites.sites; //all the sites you've visited so far
   var sortedSites = new Array();
   var totalTime = 0;
+
   for (site in sites) { 
    sortedSites.push([site, sites[site]]);
    totalTime += sites[site];
@@ -122,9 +124,67 @@ function addLocalDisplay() {
     maxTime = sites[sortedSites[0][0]];
   }
   var relativePct = 0;
+
+  // // object to keep track of various categories and time spent on each
+  // var categories = {};
+
   for (var index = 0; ((index < sortedSites.length) && (index < max));
       index++ ){
+
    var site = sortedSites[index][0];
+
+   // var currCategory = categorize(site);
+   // var currTime = sites[site];
+
+   // if (!(currCategory in categories)) {
+
+   //     categories[currCategory] = currTime;
+
+   //     row = document.createElement("tr"+currCategory);
+   //     cell = document.createElement("td1");
+   //     var removeImage = document.createElement("img");
+   //     removeImage.src = chrome.extension.getURL("images/remove.png");
+   //     removeImage.title = "Remove and stop tracking.";
+   //     removeImage.width = 10;
+   //     removeImage.height = 10;
+   //     removeImage.onclick = addIgnoredSite(site);
+   //     cell.appendChild(removeImage);
+   //     var h = document.createElement('h');
+   //     // var linkText = document.createTextNode(site+": "+categorize(site));
+   //     var linkText = document.createTextNode(currCategory);
+   //     h.appendChild(linkText);
+   //     //h.title = "Open link in new tab";
+   //     cell.appendChild(h);
+   //     row.appendChild(cell);
+   //     cell = document.createElement("td2");
+   //     cell.appendChild(document.createTextNode(secondsToString(categories[currCategory])));
+   //     row.appendChild(cell);
+   //     cell = document.createElement("td3");
+   //     cell.appendChild(document.createTextNode(
+   //       (categories[currCategory] / totalTime * 100).toFixed(2)));
+   //     relativePct = (categories[currCategory]/maxTime*100).toFixed(2);
+   //     row = setPercentageBG(row,relativePct);
+   //     row.appendChild(cell);
+   //     tbody.appendChild(row);
+   // }
+   // else {
+   //     categories[currCategory] = categories[currCategory] + currTime;
+   //     row = document.getElementById("tr"+currCategory);
+   //     cell = row.childNodes.getElementById("td2");
+   //     cell.removeChild(cell.childNodes[0]);
+   //     cell.appendChild(document.createTextNode(secondsToString(categories[currCategory])));
+   //     cell = row.childNodes.getElementById("td3");
+   //     cell.removeChild(cell.childNodes[0]);
+   //     cell.appendChild(document.createTextNode(
+   //       (categories[currCategory] / totalTime * 100).toFixed(2)));
+   //     relativePct = (categories[currCategory]/maxTime*100).toFixed(2);
+   //     row = setPercentageBG(row,relativePct);
+   //     row.removeChild(row.childNodes[2]);
+   //     row.appendChild(cell);
+   //     tbody.removeChild(tbody.childNodes[0]);
+   //     tbody.appendChild(row);
+   // }
+
    row = document.createElement("tr");
    cell = document.createElement("td");
    var removeImage = document.createElement("img");
@@ -135,7 +195,12 @@ function addLocalDisplay() {
    removeImage.onclick = addIgnoredSite(site);
    cell.appendChild(removeImage);
    var h = document.createElement('h');
-   var linkText = document.createTextNode(site+": "+categorize(site));
+
+   // var linkText = document.createTextNode(site+": "+categorize(site));
+   var currCategory = categorize(site);
+   var linkText = document.createTextNode(currCategory);
+   var currTime = sites[site];
+
    h.appendChild(linkText);
    //h.title = "Open link in new tab";
    //h.href = site;
@@ -144,11 +209,15 @@ function addLocalDisplay() {
    row.appendChild(cell);
    cell = document.createElement("td");
    cell.appendChild(document.createTextNode(secondsToString(sites[site])));
+   // cell.appendChild(document.createTextNode(secondsToString(categories[currCategory])));
    row.appendChild(cell);
    cell = document.createElement("td");
    cell.appendChild(document.createTextNode(
      (sites[site] / totalTime * 100).toFixed(2)));
    relativePct = (sites[site]/maxTime*100).toFixed(2);
+   // cell.appendChild(document.createTextNode(
+   //   (categories[currCategory] / totalTime * 100).toFixed(2)));
+   // relativePct = (categories[currCategory]/maxTime*100).toFixed(2);
    row = setPercentageBG(row,relativePct);
    row.appendChild(cell);
    tbody.appendChild(row);
