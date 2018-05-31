@@ -135,13 +135,13 @@ function addLocalDisplay() {
 
    var site = sortedSites[index][0];
 
-   var currCategory = categorize(site);
-   // var currCategory = "fake cat1";
-   // var d = new Date();
-   // var n = d.getTime();
-   // if(n % 2 == 0){
-   //     currCategory = "fake dog";
-   // }
+   // var currCategory = categorize(site);
+   var currCategory = "fake cat1";
+   var d = new Date();
+   var n = d.getTime();
+   if(n % 2 == 0){
+       currCategory = "fake dog";
+   }
 
    var currTime = sites[site];
 
