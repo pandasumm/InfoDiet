@@ -51,7 +51,7 @@ function secondsToString(seconds) {
 }
 
 function calculateReadingTime(website, currTime) {
-  var avgReadingSpeed = 200; //avg reading speed of an adult is 200 words/minute 
+  var avgReadingSpeed = 200; //avg reading speed of an adult is 200 words/minute
   var totalWords = 0; // find length of main article/piece of reading on the webpage
   var time = Math.min(totalWords/avgReadingSpeed, currTime);
   return time;
@@ -64,8 +64,8 @@ function categorize(site_url) {
   var xhr = new XMLHttpRequest();
   var url_base64 = btoa(url);
   console.log(url_base64);
-  var s_key = "e1NNl7JTVeG1vWQyiyT5";
-  var a_key = "c67478NZ6P7mrrsKy2XO";
+  var s_key = "uIopvgpM4rOIQ17cnKeu";
+  var a_key = "zNyOSgk05CbrLPR8R6Qx";
   request = "categories/v3/"+url_base64 + "?key=" + a_key;
   var hash = MD5(s_key + ":" + request);
   console.log(hash)
@@ -91,7 +91,7 @@ function addLocalDisplay() {
   var sortedSites = new Array();
   var totalTime = 0;
 
-  for (site in sites) { 
+  for (site in sites) {
    sortedSites.push([site, sites[site]]);
    totalTime += sites[site];
   }
@@ -136,6 +136,13 @@ function addLocalDisplay() {
    var site = sortedSites[index][0];
 
    var currCategory = categorize(site);
+   // var currCategory = "fake cat1";
+   // var d = new Date();
+   // var n = d.getTime();
+   // if(n % 2 == 0){
+   //     currCategory = "fake dog";
+   // }
+
    var currTime = sites[site];
 
    if (!(currCategory in categories)) {
@@ -144,8 +151,9 @@ function addLocalDisplay() {
        categoriesRows[currCategory] = rowCount;
        rowCount++;
 
-       row = document.createElement("tr"+categoriesRows[currCategory]);
-       cell = document.createElement("td1");
+       row = document.createElement("tr");
+       row.setAttribute("id", currCategory);
+       cell = document.createElement("td");
        var removeImage = document.createElement("img");
        removeImage.src = chrome.extension.getURL("images/remove.png");
        removeImage.title = "Remove and stop tracking.";
@@ -160,10 +168,12 @@ function addLocalDisplay() {
        //h.title = "Open link in new tab";
        cell.appendChild(h);
        row.appendChild(cell);
-       cell = document.createElement("td2");
+       cell = document.createElement("td");
+       cell.setAttribute("id", currCategory + "2");
        cell.appendChild(document.createTextNode(secondsToString(categories[currCategory])));
        row.appendChild(cell);
-       cell = document.createElement("td3");
+       cell = document.createElement("td");
+       cell.setAttribute("id", currCategory + "3");
        cell.appendChild(document.createTextNode(
          (categories[currCategory] / totalTime * 100).toFixed(2)));
        relativePct = (categories[currCategory]/maxTime*100).toFixed(2);
@@ -172,12 +182,14 @@ function addLocalDisplay() {
        tbody.appendChild(row);
    }
    else {
+       console.log(currTime);
+       console.log(categories[currCategory]);
        categories[currCategory] = categories[currCategory] + currTime;
-       row = document.getElementById("tr"+categoriesRows[currCategory]);
-       cell = row.childNodes.getElementById("td2");
-       //cell.removeChild(cell.childNodes[0]);
+       row = document.getElementById(currCategory);
+       cell = document.getElementById(currCategory + "2");
+       cell.removeChild(cell.childNodes[0]);
        cell.appendChild(document.createTextNode(secondsToString(categories[currCategory])));
-       cell = row.childNodes.getElementById("td3");
+       cell = document.getElementById(currCategory + "3");
        cell.removeChild(cell.childNodes[0]);
        cell.appendChild(document.createTextNode(
          (categories[currCategory] / totalTime * 100).toFixed(2)));
