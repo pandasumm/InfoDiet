@@ -1,124 +1,99 @@
-var _gaq = _gaq || [];
-_gaq.push(['_setAccount', 'UA-45267314-2']);
-_gaq.push(['_trackPageview']);
-
-(function() {
-  var ga = document.createElement('script');
-  ga.type = 'text/javascript';
-  ga.async = true;
-  ga.src = 'https://ssl.google-analytics.com/ga.js';
-  var s = document.getElementsByTagName('script')[0];
-  s.parentNode.insertBefore(ga, s);
-})();
-
-var config = new Config();
-var sites = new Sites(config);
-
-function updateClearStatsInterval() {
-  var select = document.getElementById("clear_stats_interval");
-  var option = select.options[select.selectedIndex];
-  config.clearStatsInterval = option.value;
-  // TODO(nav): Set nextTimeToClear in Config
-  restoreOptions();
-}
-
-function updateTimeDisplay() {
-  var select = document.getElementById("time_display");
-  var option = select.options[select.selectedIndex];
-  config.timeDisplayFormat = option.value;
-  restoreOptions();
-}
-
-function addIgnoredSite() {
-  var newSite = document.getElementById("new_ignored_site").value;
-  if (newSite.indexOf("http://") != 0 &&
-    newSite.indexOf("https://") != 0) {
-    alert("Include http:// or https:// prefix.");
-    return;
-  }
-
-  chrome.extension.sendRequest({
-      action: "addIgnoredSite",
-      site: newSite
-    },
-    function(response) {
-      restoreOptions();
+document.getElementById("setGoal").addEventListener("click",
+    function() {
+        var key = "news";
+        value = 120;
+        chrome.storage.local.set({[key]: value}, function() {
+          console.log('Value is set to ' + value);
+        });
     });
-}
 
-function removeIgnoredSites() {
-  var select = document.getElementById("ignored_sites");
-  var ignoredSites = [];
-  for (var i = 0; i < select.children.length; i++) {
-    var child = select.children[i];
-    if (child.selected == false) {
-      ignoredSites.push(child.value);
-    }
-  }
-  localStorage['ignoredSites'] = JSON.stringify(ignoredSites);
-  restoreOptions();
-}
+document.getElementById("getGoal").addEventListener("click",
+    function() {
+        key = "news";
+        chrome.storage.local.get([key], function(result) {
+          console.log("key: ", key);
+          console.log(result);
+          console.log('Value currently is ' + result.news);
+        });
+    });
 
-// Restores options from localStorage, if available.
-function restoreOptions() {
-  var ignoredSites = localStorage['ignoredSites'];
-  if (!ignoredSites) {
-    return;
-  }
-  ignoredSites = JSON.parse(ignoredSites);
-  var select = document.getElementById("ignored_sites");
-  select.options.length = 0;
-  for (var i in ignoredSites) {
-    var option = document.createElement("option");
-    option.text = ignoredSites[i];
-    option.value = ignoredSites[i];
-    select.appendChild(option);
-  }
+document.getElementById("clearGoal").addEventListener("click",
+    function() {
+        chrome.storage.local.remove(["news"], function(){
+            console.log("remove ", "news");
+        });
+        // chrome.storage.local.clear();
+    });
 
-  var clearStatsInterval = config.clearStatsInterval;
-  select = document.getElementById("clear_stats_interval");
-  for (var i = 0; i < select.options.length; i++) {
-    var option = select.options[i];
-    if (option.value == clearStatsInterval) {
-      option.selected = true;
-      break;
-    }
-  }
-
-  var timeDisplay = config.timeDisplayFormat;
-  select = document.getElementById("time_display");
-  for (var i = 0; i < select.options.length; i++) {
-    var option = select.options[i];
-    if (option.value == timeDisplay) {
-      option.selected = true;
-      break;
-    }
-  }
-}
-
-function download() {
-  var csvContent = "data:text/csv;charset=utf-8,";
-  var sitesDict = sites.sites;
-  var pairs = [];
-  for (var site in sitesDict) {
-    if (sitesDict.hasOwnProperty(site)) {
-      pairs.push(site + "," + sitesDict[site]);
-    }
-  }
-  csvContent += pairs.join("\n");
-  window.open(encodeURI(csvContent));
-}
-
-document.addEventListener("DOMContentLoaded", function() {
-  document.getElementById("add_ignored").addEventListener(
-    "click", addIgnoredSite);
-  document.getElementById("remove_ignored").addEventListener(
-    "click", removeIgnoredSites);
-  document.getElementById("clear_stats_interval").addEventListener(
-    "change", updateClearStatsInterval);
-  document.getElementById("time_display").addEventListener(
-    "change", updateTimeDisplay);
-  document.getElementById("download").addEventListener(
-    "click", download);
-  restoreOptions();
-});
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myPieChart = new Chart(ctx,{
+        type: 'pie',
+        data: {
+            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                    datasets: [{
+                        label: '# of Votes',
+                        data: [12, 19, 3, 5, 2, 3],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255,99,132,1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]},
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero:true
+                                    }
+                                }]
+                            }
+                        }
+    });
+    // var myChart = new Chart(ctx, {
+    //     type: 'bar',
+    //     data: {
+    //         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+    //         datasets: [{
+    //             label: '# of Votes',
+    //             data: [12, 19, 3, 5, 2, 3],
+    //             backgroundColor: [
+    //                 'rgba(255, 99, 132, 0.2)',
+    //                 'rgba(54, 162, 235, 0.2)',
+    //                 'rgba(255, 206, 86, 0.2)',
+    //                 'rgba(75, 192, 192, 0.2)',
+    //                 'rgba(153, 102, 255, 0.2)',
+    //                 'rgba(255, 159, 64, 0.2)'
+    //             ],
+    //             borderColor: [
+    //                 'rgba(255,99,132,1)',
+    //                 'rgba(54, 162, 235, 1)',
+    //                 'rgba(255, 206, 86, 1)',
+    //                 'rgba(75, 192, 192, 1)',
+    //                 'rgba(153, 102, 255, 1)',
+    //                 'rgba(255, 159, 64, 1)'
+    //             ],
+    //             borderWidth: 1
+    //         }]
+    //     },
+    //     options: {
+    //         scales: {
+    //             yAxes: [{
+    //                 ticks: {
+    //                     beginAtZero:true
+    //                 }
+    //             }]
+    //         }
+    //     }
+    // });
