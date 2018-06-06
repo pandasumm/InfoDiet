@@ -130,3 +130,19 @@ form button {
 form button:hover {
   background-color: #f5f7f9;
 }
+
+#chart-holder {
+  width: 25%;
+  margin-top: 100px;
+  /*border: 3px solid green;*/
+  float: left;
+  padding-top: 300px;
+  padding-left: 50px;
+  margin: 0 auto 10px auto;
+  font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+}
+
+h2 {
+  color: white;
+  font-family: 'Open Sans','Helvetica Neue',Arial,sans-serif;
+}

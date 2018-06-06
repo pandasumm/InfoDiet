@@ -25,75 +25,88 @@ document.getElementById("clearGoal").addEventListener("click",
         // chrome.storage.local.clear();
     });
 
-    var ctx = document.getElementById("myChart").getContext('2d');
-    var myPieChart = new Chart(ctx,{
-        type: 'pie',
-        data: {
-            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-                    datasets: [{
-                        label: '# of Votes',
-                        data: [12, 19, 3, 5, 2, 3],
-                        backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
-                        ],
-                        borderColor: [
-                            'rgba(255,99,132,1)',
+    // var ctx = document.getElementById("myChart").getContext('2d');
+    // var myDoughnutChart = new Chart(ctx, {
+    //   type: 'doughnut',
+    //   data: data,
+    //   options: options
+    // });
+
+Chart.defaults.global.legend.position = 'bottom';
+Chart.defaults.global.legend.labels.usePointStyle = true;
+Chart.defaults.global.legend.labels.boxWidth = 15;
+Chart.defaults.global.tooltips.backgroundColor = '#000';
+
+isArray = Array.isArray ?
+    function (obj) {
+      return Array.isArray(obj);
+    } :
+    function (obj) {
+      return Object.prototype.toString.call(obj) === '[object Array]';
+    };
+
+getValueAtIndexOrDefault = (value, index, defaultValue) => {
+    if (value === undefined || value === null) {
+      return defaultValue;
+    }
+
+    if (this.isArray(value)) {
+      return index < value.length ? value[index] : defaultValue;
+    }
+
+    return value;
+  };
+
+  var backgroundColors = [
+                            'rgba(255, 99, 132)',
+                            'rgba(54, 162, 235)',
+                            'rgba(255, 206, 86)',
+                            'rgba(75, 192, 192)',
+                            'rgba(153, 102, 255)',
+                            'rgba(255, 159, 64)'
+                        ];
+
+  var borderColors = [
+                            'rgba(255,99,132, 1)',
                             'rgba(54, 162, 235, 1)',
                             'rgba(255, 206, 86, 1)',
                             'rgba(75, 192, 192, 1)',
                             'rgba(153, 102, 255, 1)',
                             'rgba(255, 159, 64, 1)'
-                        ],
+                        ];
+
+  var dataSet = [12, 19, 3, 5, 2, 3];
+  var categoryLabels = ["Arts & Entertainment", 
+                        "Society", 
+                        "Business", 
+                        "Law, Government, & Politics", 
+                        "News / Weather / Information", 
+                        "Non-standard Content"];
+
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myDoughnutChart = new Chart(ctx,{
+        type: 'doughnut',
+        data: {
+            labels: categoryLabels,
+                    datasets: [{
+                        label: '# of Votes',
+                        data: dataSet,
+                        backgroundColor: backgroundColors,
+                        borderColor: borderColors, 
                         borderWidth: 1
-                    }]},
-                        options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero:true
-                                    }
-                                }]
-                            }
-                        }
+                    }]
+        },
+        options: {
+          legend: {
+            labels: {
+              fontColor: "white",
+              fontSize: 18,
+              boxWidth: 50,
+              padding: 10
+            }
+          },
+          layout: {
+
+          }
+        }
     });
-    // var myChart = new Chart(ctx, {
-    //     type: 'bar',
-    //     data: {
-    //         labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-    //         datasets: [{
-    //             label: '# of Votes',
-    //             data: [12, 19, 3, 5, 2, 3],
-    //             backgroundColor: [
-    //                 'rgba(255, 99, 132, 0.2)',
-    //                 'rgba(54, 162, 235, 0.2)',
-    //                 'rgba(255, 206, 86, 0.2)',
-    //                 'rgba(75, 192, 192, 0.2)',
-    //                 'rgba(153, 102, 255, 0.2)',
-    //                 'rgba(255, 159, 64, 0.2)'
-    //             ],
-    //             borderColor: [
-    //                 'rgba(255,99,132,1)',
-    //                 'rgba(54, 162, 235, 1)',
-    //                 'rgba(255, 206, 86, 1)',
-    //                 'rgba(75, 192, 192, 1)',
-    //                 'rgba(153, 102, 255, 1)',
-    //                 'rgba(255, 159, 64, 1)'
-    //             ],
-    //             borderWidth: 1
-    //         }]
-    //     },
-    //     options: {
-    //         scales: {
-    //             yAxes: [{
-    //                 ticks: {
-    //                     beginAtZero:true
-    //                 }
-    //             }]
-    //         }
-    //     }
-    // });
