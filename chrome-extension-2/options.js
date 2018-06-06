@@ -1,7 +1,27 @@
+document.getElementById("goalButton").addEventListener("click",
+    function() {
+        var cats,
+            selectedCat;
+        cats = document.getElementById("selectedCat");
+        selectedCat = cats.options[cats.selectedIndex].text;
+        var goalTime;
+        goalTime = document.getElementById("goalTime").value;
+        goalTime = parseInt(goalTime);
+        console.log("selected cat: ", selectedCat, " time: ", goalTime);
+
+        var para = document.createElement("p");
+        var node = document.createTextNode("catagory: "+selectedCat+" time: "+goalTime);
+        para.appendChild(node);
+        var element = document.getElementById("goals");
+        element.appendChild(para);
+    });
+
+
+
 document.getElementById("setGoal").addEventListener("click",
     function() {
-        var key = "news";
-        value = 120;
+        var key = "goalsTime";
+        value = [111,222,333];
         chrome.storage.local.set({[key]: value}, function() {
           console.log('Value is set to ' + value);
         });
@@ -9,18 +29,18 @@ document.getElementById("setGoal").addEventListener("click",
 
 document.getElementById("getGoal").addEventListener("click",
     function() {
-        key = "news";
+        key = "goalsTime";
         chrome.storage.local.get([key], function(result) {
           console.log("key: ", key);
           console.log(result);
-          console.log('Value currently is ' + result.news);
+          console.log('Value currently is ' + result.goalsTime);
         });
     });
 
 document.getElementById("clearGoal").addEventListener("click",
     function() {
-        chrome.storage.local.remove(["news"], function(){
-            console.log("remove ", "news");
+        chrome.storage.local.remove(["goalsTime"], function(){
+            console.log("remove ", "goalsTime");
         });
         // chrome.storage.local.clear();
     });
